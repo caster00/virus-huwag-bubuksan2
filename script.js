@@ -26,7 +26,7 @@ function initChickenGame() {
   document.getElementById('dpadContainer').style.display = 'grid';
   canvas.innerHTML = `<div class="lane lane-1"></div><div class="lane lane-2"></div><div class="lane lane-3"></div><div class="lane lane-4"></div><div class="goal-cake">🎂</div><div id="chicken">🐔</div>`;
   chickenX = 105; chickenY = 205; obstacles = []; updateChickenPosition();
-  const carPool = ['🚘', '🚕', '🏎️', '🚙', '🚚'];
+  const carPool = ['🚘', '🚕', '🏎️', '🚙', '🖕'];
   for(let i = 1; i <= 4; i++) {
     let laneY = i * 40; let speed = (1.5 + Math.random() * 1.5) * (i % 2 === 0 ? 1 : -1);
     for (let c = 0; c < 2; c++) {
@@ -103,8 +103,8 @@ function sendWish() {
     conf.style.cssText = `left:${Math.random()*100}vw; width:8px; height:8px; background:${shade}; animation-duration:${2.5 + Math.random()*2.5}s;`;
     document.body.appendChild(conf); setTimeout(() => conf.remove(), 5000);
   }
-  document.getElementById('mainTitle').textContent = `★ HAPPY 19th BIRTHDAY, AYESHA! ★`;
-  document.getElementById('subTitle').textContent = 'Your secret 19th birthday wish has been launched into the universe!';
+  document.getElementById('mainTitle').textContent = `★ HAPPY 25th BIRTHDAY, HEDGE ★`;
+  document.getElementById('subTitle').textContent = 'Your secret 25th birthday wish has been launched into the universe!';
   document.getElementById('wishVault').style.display = 'block';
   document.getElementById('vaultWishText').textContent = `"${txt}"`;
   document.getElementById('wishBtn').disabled = true; document.getElementById('wishInput').disabled = true;
