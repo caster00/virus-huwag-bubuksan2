@@ -323,21 +323,28 @@ body {
   backface-visibility: hidden;
   border: 3px solid var(--off-white);
   background: var(--surface);
-  display: flex; flex-direction: column; align-items: center;
-  padding: 16px; text-align: center; gap: 8px;
+  padding: 16px; 
 }
 
-/* Front card faces center perfectly */
-.flip-card-front { justify-content: center; }
+/* Front face logic stays centered */
+.flip-card-front { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center;
+  text-align: center; 
+  gap: 8px;
+}
 
-/* Back card faces top-align to allow scrolling down */
+/* Back face switched to display: block to natively fix scroll cutoff bugs */
 .flip-card-back { 
   transform: rotateY(180deg); 
-  justify-content: flex-start; 
+  display: block;
   overflow-y: auto; 
+  text-align: center;
 }
 
-.card-name { font-weight: 700; color: var(--ink); font-size: 1rem; margin-bottom: 4px; letter-spacing: 0.5px; }
+.card-name { font-weight: 700; color: var(--ink); font-size: 1rem; margin-top: 4px; margin-bottom: 8px; letter-spacing: 0.5px; }
 
 .card-msg { 
   font-size: 0.78rem; 
@@ -345,10 +352,8 @@ body {
   line-height: 1.4; 
   font-weight: 600; 
   width: 100%;
-  max-height: 100%;
-  overflow-y: auto;
-  padding-right: 4px;
   word-wrap: break-word;
+  padding-bottom: 14px; /* Added spacing to stop final lines from clipping layout boundaries */
 }
 
 .hint { font-size: .65rem; color: var(--muted); margin-top: 4px; letter-spacing: 1px; }
@@ -399,26 +404,24 @@ body {
 .letter-card {
   position: absolute; left: 12px; right: 12px; bottom: 10px; height: 150px;
   background: var(--surface-alt); border: 3px solid var(--off-white); z-index: 3;
-  padding: 14px 10px; display: flex; flex-direction: column; justify-content: center;
-  align-items: center; text-align: center; 
-  overflow-y: auto; /* Changed from hidden to auto for scrolling */
+  padding: 14px 10px; display: block; /* Changed to block layout to naturally calculate height offsets */
+  overflow-y: auto; 
   opacity: 0;
   transform: translateY(40px);
   transition: transform .5s cubic-bezier(.175,.885,.32,1.275), opacity .3s ease, height .4s ease;
   transition-delay: .15s;
 }
 
-/* Adjust layout space and alignments dynamically when the envelope opens */
+/* Open configuration with stable max-height viewports */
 .envelope-wrapper.open .letter-card { 
   opacity: 1; 
   transform: translateY(-160px); 
-  justify-content: flex-start; /* Switch alignment to keep scroll tracking correct */
-  height: 250px;                 /* Defined height baseline so everything isn't crushed */
+  height: 250px;                 
   max-height: 260px;             
   z-index: 7; 
   box-shadow: 0 4px 0 var(--black); 
 }
-.letter-card p { font-size: .72rem; color: var(--ink); line-height: 1.45; font-weight: 700; word-wrap: break-word; }
+.letter-card p { font-size: .72rem; color: var(--ink); line-height: 1.45; font-weight: 700; word-wrap: break-word; padding-bottom: 12px; }
 
 /* Custom letter-card scroll track */
 .letter-card::-webkit-scrollbar {
