@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday, Ayesha! ▪▫</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== PIXEL CAR / ROAD STRIP (pure CSS, box-shadow art) ===== -->
+<div class="car-lane" aria-hidden="true">
+  <div class="road-dashes"></div>
+  <div class="pixel-car car-1"></div>
+  <div class="pixel-car car-2 flip"></div>
+</div>
+
+<div id="appHeader">
+  <div id="mainTitle">HAPPY 19th BIRTHDAY, AYESHA!</div>
+  <div id="subTitle">Type your special 19th year wish below to activate the celebration! ▪</div>
+</div>
+
+<button id="musicBtn" onclick="toggleBirthdayMusic()">▸ PLAY BIRTHDAY THEME</button>
+
+<div class="app-container">
+  <div class="wish-section">
+    <input type="text" id="wishInput" placeholder="Write a birthday wish, Ayesha..." maxlength="100" autocomplete="off" />
+    <button id="wishBtn">★ SEND MY WISH ★</button>
+  </div>
+
+  <div id="wishVault">
+    <h3>AYESHA'S BIRTHDAY WISH HAS BEEN SEALED</h3>
+    <p id="vaultWishText"></p>
+    <div style="letter-spacing:6px; margin-top:12px; background:transparent; color: var(--ink);">■ ■ ■</div>
+  </div>
+
+  <div id="bonusSection">
+    <h3>▮ CHICKEN CROSSING ARCADE ▮</h3>
+    <p style="font-size:0.85rem; color:var(--muted); margin-bottom:4px;">Cross the street safely to get your Birthday Cake!</p>
+    <p id="scoreDisplay" style="margin: 4px 0 10px; font-weight: 700; color: var(--ink); font-size:1.2rem;">SCORE: 0</p>
+
+    <div class="game-box" id="gameCanvas">
+      <div style="padding-top: 80px;">
+        <button class="game-btn" onclick="initChickenGame()">START GAME</button>
+      </div>
+    </div>
+
+    <div class="mobile-controls" id="dpadContainer" style="display:none;">
+      <button class="dpad-btn dpad-up" onclick="moveChicken('up')">▲</button>
+      <button class="dpad-btn dpad-left" onclick="moveChicken('left')">◀</button>
+      <button class="dpad-btn dpad-down" onclick="moveChicken('down')">▼</button>
+      <button class="dpad-btn dpad-right" onclick="moveChicken('right')">▶</button>
+    </div>
+  </div>
+
+  <div class="cards-section" id="cardsSection">
+    <h2>▮ YOUR BIRTHDAY MESSAGES! ▮</h2>
+    <div class="cards-grid">
+
+      <div class="flip-card card-a" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">From Kuya Hedge</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">"Happy birthday to my baby sisterrr i never got to have a sister, but with you, i always feel like i have one kahit maldita ka HAHAHAHAHAHAHA. i wish you all the best. aral ka mabuti, and kuya hedge is always here whenever you need me love you" <br><br><strong>- Hedge</strong></div></div></div></div>
+
+      <div class="flip-card card-b" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">From Paul</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">"Seya, even though we've never met in person, i'm grateful that our paths crossed online. thank you for the endless conversations, the laughs, the backstabs, the codms, and for being someone we can talk to. it's amazing how a friendship can grow despite the distance. happiest birthday our maknae!" <br><br><strong>- Paul</strong></div></div></div></div>
+
+      <div class="flip-card card-c" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">From Porstia</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">"Hello Seya, happy, happy birthday, babe! I wish you all the best. If you need someone na makakausap when you're having a hard time, I'm here—always busy, but I can make time naman. You know naman that I can be your ate. Vaur people are always here for you. Enjoy this special day of yours. Happy birthday! I love you!" <br><br><strong>- Porstia</strong></div></div></div></div>
+
+      <div class="flip-card card-d" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">From Sage</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">"Hello ariana grande ku, happy birthday. alam mo na siguro yon na thankful ako sa unexpected na pagiging mag bff nating dalawa, dito lang me always for u kapag need mo mag vent out or mag random chika. and sana tuloy tuloy lang yung pagiging masama ng puso mo ngayon, andito lang kami para suportahan kayong dalawa. love uu seyababes ko!" <br><br><strong>- Sage</strong></div></div></div></div>
+
+      <div class="flip-card card-a" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">From Zeynan</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">"Happy birthday, seya. more birthdays to come" <br><br><strong>- Zeynan</strong></div></div></div></div>
+
+      <div class="flip-card card-b" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">From Drew</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">"Happy birthday Seyaaa! oh ayan 19 ka na, galingan mo lang palagi sa acads mo and pagbutihin niyo lang din ni jiar. more birthdays to come and enjoy your dayyy ne, happy birthday olet" <br><br><strong>- Drew</strong></div></div></div></div>
+
+      <div class="flip-card card-c" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">From Dynant</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">"Happy birthday, seyaa! Enjoy your day, wishing u a day filled with happiness." <br><br><strong>- Dynant</strong></div></div></div></div>
+
+      <div class="flip-card card-d" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">From Sean</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">"Happy birthdayy!! tanda mo na seya hahahahahah sana wag magbago ka na stay what you are. anw sana maenjoy mo birthday mo, solid kang tropa and na aappreciate ko existence mo yun lang" <br><br><strong>- Sean</strong></div></div></div></div>
+
+      <!-- 10 additional blank template cards to reach 18 total — edit the placeholder text/name below to add more birthday messages -->
+      <div class="flip-card card-a" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">Friend #9</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">Add your birthday message here! Edit the card-msg text in the HTML to personalize this card. <br><br><strong>- Your Name</strong></div></div></div></div>
+
+      <div class="flip-card card-b" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">Friend #10</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">Add your birthday message here! Edit the card-msg text in the HTML to personalize this card. <br><br><strong>- Your Name</strong></div></div></div></div>
+
+      <div class="flip-card card-c" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">Friend #11</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">Add your birthday message here! Edit the card-msg text in the HTML to personalize this card. <br><br><strong>- Your Name</strong></div></div></div></div>
+
+      <div class="flip-card card-d" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">Friend #12</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">Add your birthday message here! Edit the card-msg text in the HTML to personalize this card. <br><br><strong>- Your Name</strong></div></div></div></div>
+
+      <div class="flip-card card-a" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">Friend #13</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">Add your birthday message here! Edit the card-msg text in the HTML to personalize this card. <br><br><strong>- Your Name</strong></div></div></div></div>
+
+      <div class="flip-card card-b" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">Friend #14</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">Add your birthday message here! Edit the card-msg text in the HTML to personalize this card. <br><br><strong>- Your Name</strong></div></div></div></div>
+
+      <div class="flip-card card-c" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">Friend #15</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">Add your birthday message here! Edit the card-msg text in the HTML to personalize this card. <br><br><strong>- Your Name</strong></div></div></div></div>
+
+      <div class="flip-card card-d" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">Friend #16</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">Add your birthday message here! Edit the card-msg text in the HTML to personalize this card. <br><br><strong>- Your Name</strong></div></div></div></div>
+
+      <div class="flip-card card-a" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">Friend #17</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">Add your birthday message here! Edit the card-msg text in the HTML to personalize this card. <br><br><strong>- Your Name</strong></div></div></div></div>
+
+      <div class="flip-card card-b" onclick="flipCard(this)"><div class="flip-card-inner"><div class="flip-card-front"><div class="card-name">Friend #18</div><div class="hint">Click to Read</div></div><div class="flip-card-back"><div class="card-msg">Add your birthday message here! Edit the card-msg text in the HTML to personalize this card. <br><br><strong>- Your Name</strong></div></div></div></div>
+
+    </div>
+  </div>
+
+  <div class="envelope-section" id="envelopeSection">
+    <h2>▮ A SPECIAL LETTER FOR YOU</h2>
+    <div class="envelope-wrapper" id="birthdayEnvelope" onclick="openEnvelope()">
+      <svg class="envelope-flap" viewBox="0 0 280 100" preserveAspectRatio="none">
+        <polygon points="0,0 140,100 280,0" fill="var(--surface-alt)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="miter"/>
+      </svg>
+      <div class="envelope-seal">■</div>
+      <svg class="envelope-pocket-svg" viewBox="0 0 280 125" preserveAspectRatio="none">
+        <polygon points="0,30 140,95 280,30 280,125 0,125" fill="var(--surface)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="miter"/>
+      </svg>
+      <div class="letter-card">
+        <p>Happy birthday, dear. I hope you will like this present I did, it is not much but i hope this will be a part of your celebration.<br><br>I hope this little gift reminds you that someone is always cheering for you and wishing you the best. I'm grateful for the moments I get to know you, and I hope you continue to grow into the amazing person you are becoming. May your heart always be filled with happiness, your dreams slowly turn into reality, and may you always find reasons to smile. ▪</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
