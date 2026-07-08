@@ -441,3 +441,12 @@ body {
 @media (max-width: 480px) {
   .car-lane { height: 50px; }
 }
+
+/* Specific adjustment to make Issy's message fit perfectly without scrolling */
+.card-msg[data-name="issy"], 
+.flip-card:has(.card-name:contains("issy")) .card-msg,
+.flip-card-back:has(.card-name) .card-msg {
+  font-size: 0.68rem;      /* Slightly smaller font size to save vertical space */
+  line-height: 1.3;        /* Shorter line spacing */
+  padding-bottom: 0px;     /* Removes excess bottom padding */
+}
