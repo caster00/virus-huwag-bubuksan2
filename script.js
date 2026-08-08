@@ -19,14 +19,36 @@ function playMelody(idx) {
   toneTimer = setTimeout(() => playMelody(idx + 1), tempos[idx]);
 }
 
+// ---- Short celebratory jingle for new high scores ----
+function playHighScoreJingle() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const jingle = [523, 659, 784, 1046];
+  jingle.forEach((freq, i) => {
+    const osc = audioCtx.createOscillator(); const g = audioCtx.createGain();
+    osc.type = 'square'; osc.frequency.setValueAtTime(freq, audioCtx.currentTime + i * 0.11);
+    g.gain.setValueAtTime(0.001, audioCtx.currentTime + i * 0.11);
+    g.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + i * 0.11 + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.11 + 0.18);
+    osc.connect(g); g.connect(audioCtx.destination);
+    osc.start(audioCtx.currentTime + i * 0.11); osc.stop(audioCtx.currentTime + i * 0.11 + 0.2);
+  });
+}
+
 let gameScore = 0; let chickenX = 105; let chickenY = 205; let gameLoopInterval = null; let obstacles = []; let currentSpeedMultiplier = 1.0;
+let highScore = parseInt(localStorage.getItem('hedgeChickenHighScore') || '0', 10);
+
+function updateHighScoreDisplay() {
+  const el = document.getElementById('highScoreDisplay');
+  if (el) el.textContent = `HIGH SCORE: ${highScore}`;
+}
 
 function initChickenGame() {
   const canvas = document.getElementById('gameCanvas');
   document.getElementById('dpadContainer').style.display = 'grid';
   canvas.innerHTML = `<div class="lane lane-1"></div><div class="lane lane-2"></div><div class="lane lane-3"></div><div class="lane lane-4"></div><div class="goal-cake">🎂</div><div id="chicken">🐔</div>`;
   chickenX = 105; chickenY = 205; obstacles = []; updateChickenPosition();
-  const carPool = ['🚘', '🚕', '🏎️', '🚙', '🖕'];
+  updateHighScoreDisplay();
+  const carPool = ['🚘', '🚕', '🏎️', '🚙', '🚗'];
   for(let i = 1; i <= 4; i++) {
     let laneY = i * 40; let speed = (1.5 + Math.random() * 1.5) * (i % 2 === 0 ? 1 : -1);
     for (let c = 0; c < 2; c++) {
@@ -83,35 +105,91 @@ function checkWinCondition() {
   if (chickenY < 40) {
     gameScore++; document.getElementById('scoreDisplay').textContent = `SCORE: ${gameScore}`;
     currentSpeedMultiplier += 0.15; chickenX = 105; chickenY = 205; updateChickenPosition();
+
+    if (gameScore > highScore) {
+      highScore = gameScore;
+      localStorage.setItem('hedgeChickenHighScore', String(highScore));
+      updateHighScoreDisplay();
+      launchConfetti(50);
+      playHighScoreJingle();
+    }
   }
 }
 
 function flipCard(el) { el.classList.toggle('flipped'); }
-function openEnvelope() { document.getElementById('birthdayEnvelope').classList.toggle('open'); document.getElementById('envelopeSection').classList.toggle('expanded'); }
 
-// Monochrome confetti palette — grayscale only, matches the pixel aesthetic
-const monoConfettiShades = ['#f2f2f0', '#e8e8e5', '#b8b8bd', '#7d7d82', '#4a4a4f', '#ffffff'];
+// Green confetti palette — matches the pixel aesthetic
+const confettiShades = ['#eafcef', '#a9e0bc', '#5cad79', '#2e6b45', '#9fdcb3', '#f0fff3'];
+
+function launchConfetti(count) {
+  for (let i = 0; i < count; i++) {
+    const conf = document.createElement('div'); conf.className = 'confetti';
+    const shade = confettiShades[Math.floor(Math.random() * confettiShades.length)];
+    conf.style.cssText = `left:${Math.random()*100}vw; width:8px; height:8px; background:${shade}; animation-duration:${2.5 + Math.random()*2.5}s;`;
+    document.body.appendChild(conf); setTimeout(() => conf.remove(), 5000);
+  }
+}
 
 function sendWish() {
   const txt = document.getElementById('wishInput').value.trim();
   if (!txt) { document.getElementById('wishInput').focus(); return; }
   if (wishSent) return; wishSent = true;
   if (!isPlaying) toggleBirthdayMusic();
-  for (let i = 0; i < 120; i++) {
-    const conf = document.createElement('div'); conf.className = 'confetti';
-    const shade = monoConfettiShades[Math.floor(Math.random() * monoConfettiShades.length)];
-    conf.style.cssText = `left:${Math.random()*100}vw; width:8px; height:8px; background:${shade}; animation-duration:${2.5 + Math.random()*2.5}s;`;
-    document.body.appendChild(conf); setTimeout(() => conf.remove(), 5000);
-  }
-  document.getElementById('mainTitle').textContent = `★ HAPPY 25th BIRTHDAY, HEDGE ★`;
-  document.getElementById('subTitle').textContent = 'Your secret 25th birthday wish has been launched into the universe!';
+  launchConfetti(120);
+  document.getElementById('mainTitle').textContent = `★ HAPPY 22nd BIRTHDAY, PORSTIA ★`;
+  document.getElementById('subTitle').textContent = 'Your secret 22nd birthday wish has been launched into the universe!';
   document.getElementById('wishVault').style.display = 'block';
   document.getElementById('vaultWishText').textContent = `"${txt}"`;
   document.getElementById('wishBtn').disabled = true; document.getElementById('wishInput').disabled = true;
   document.getElementById('bonusSection').style.display = 'block';
   document.getElementById('cardsSection').style.display = 'block';
-  document.getElementById('envelopeSection').style.display = 'block';
+}
+
+// ---- Floating balloon background animation ----
+const balloonEmojis = ['🎈'];
+function spawnBalloon() {
+  const b = document.createElement('div');
+  b.className = 'balloon';
+  b.textContent = balloonEmojis[0];
+  b.style.left = Math.random() * 96 + 'vw';
+  b.style.animationDuration = (9 + Math.random() * 6) + 's';
+  b.style.fontSize = (22 + Math.random() * 20) + 'px';
+  b.style.filter = `hue-rotate(${Math.random() > 0.5 ? 90 : -20}deg) saturate(0.6)`;
+  document.body.appendChild(b);
+  setTimeout(() => b.remove(), 16000);
+}
+setInterval(spawnBalloon, 3500);
+spawnBalloon();
+
+// ---- Hidden easter egg: click the title 6 times ----
+let titleClickCount = 0;
+function setupEasterEgg() {
+  const title = document.getElementById('mainTitle');
+  if (!title) return;
+  title.style.cursor = 'pointer';
+  title.addEventListener('click', () => {
+    titleClickCount++;
+    if (titleClickCount === 6) {
+      titleClickCount = 0;
+      showEasterEggMessage();
+    }
+  });
+}
+
+function showEasterEggMessage() {
+  const overlay = document.createElement('div');
+  overlay.className = 'egg-overlay';
+  overlay.innerHTML = `<div class="egg-box">
+      <p>▪ SECRET UNLOCKED ▪</p>
+      <p class="egg-msg">You found the hidden message! Happy 22nd, Hedge — here's to more levels, more laughs, and more birthdays with the whole vaur squad. ★</p>
+      <button class="egg-close">CLOSE</button>
+    </div>`;
+  document.body.appendChild(overlay);
+  launchConfetti(60);
+  overlay.querySelector('.egg-close').addEventListener('click', () => overlay.remove());
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
 }
 
 document.getElementById('wishBtn').addEventListener('click', sendWish);
 document.getElementById('wishInput').addEventListener('keydown', e => { if(e.key === 'Enter') sendWish(); });
+setupEasterEgg();
